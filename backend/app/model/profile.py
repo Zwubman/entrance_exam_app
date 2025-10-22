@@ -2,8 +2,8 @@ from sqlalchemy import Boolean, Column, Uuid, String, DateTime, Enum, func
 from app.config.database import Base
 import uuid
 
-class User(Base):
-    __tablename__ = 'users'
+class Profile(Base):
+    __tablename__ = 'profiles'
 
     id = Column(
         Uuid,
@@ -11,13 +11,18 @@ class User(Base):
         index=True,
         default=uuid.uuid1
     )
-    email = Column(
+    device_id = Column(
         String(255),
         nullable=False,
         unique=True
     )
-    password = Column(
-        String(255),
+    category = Column(
+        Enum(
+            'Freshman',
+            'Entrance',
+            'Exit'
+        ),
+        default='Entrance',
         nullable=False
     )
     is_deleted = Column(
