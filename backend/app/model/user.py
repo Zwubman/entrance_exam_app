@@ -1,41 +1,20 @@
-from sqlalchemy import Boolean, Column, Uuid, String, DateTime, Enum, func
+from sqlalchemy import Column, String
 from app.config.database import Base
-import uuid
+from .db_helper import DBHelper
 
-class User(Base):
-    __tablename__ = 'users'
+class User(Base, DBHelper):
+    __tablename__ = "users"
 
-    id = Column(
-        Uuid,
-        primary_key=True,
-        index=True,
-        default=uuid.uuid1
-    )
     email = Column(
         String(255),
         nullable=False,
-        unique=True
+        unique=True,
+        index=True,
+        comment="User email address"
     )
-    password = Column(
+
+    hashed_password = Column(
         String(255),
-        nullable=False
-    )
-    is_deleted = Column(
-        Boolean,
-        default=False
-    )
-    deleted_at = Column(
-        DateTime(timezone=True),
-        nullable=True
-    )
-    created_at = Column(
-        DateTime(timezone=True),
-        server_default=func.now(),
-        nullable=False
-    )
-    updated_at = Column(
-        DateTime(timezone=True),
-        onupdate=func.now(),
-        server_default=func.now(),
-        nullable=False
+        nullable=False,
+        comment="Hashed password"
     )

@@ -1,46 +1,39 @@
-from sqlalchemy import Boolean, Column, Uuid, String, DateTime, Enum, func
+from sqlalchemy import Column, String, Enum
+from sqlalchemy.orm import relationship
 from app.config.database import Base
-import uuid
+from .db_helper import DBHelper
 
-class Profile(Base):
+class Profile(Base, DBHelper):
     __tablename__ = 'profiles'
 
-    id = Column(
-        Uuid,
-        primary_key=True,
-        index=True,
-        default=uuid.uuid1
-    )
     device_id = Column(
         String(255),
         nullable=False,
-        unique=True
+        unique=True,
+        index=True,
+        comment="Unique device identifier"
     )
+    
     category = Column(
         Enum(
             'Freshman',
             'Entrance',
-            'Exit'
+            name='profile_category'
         ),
         default='Entrance',
-        nullable=False
+        nullable=False,
+        comment="Profile category type"
     )
-    is_deleted = Column(
-        Boolean,
-        default=False
+    
+    stream = Column(
+        Enum(
+            'Natural',
+            'Social',
+            'Both',
+            name='profile_stream'
+        ),
+        nullable=True,
+        comment="Academic stream"
     )
-    deleted_at = Column(
-        DateTime(timezone=True),
-        nullable=True
-    )
-    created_at = Column(
-        DateTime(timezone=True),
-        server_default=func.now(),
-        nullable=False
-    )
-    updated_at = Column(
-        DateTime(timezone=True),
-        onupdate=func.now(),
-        server_default=func.now(),
-        nullable=False
-    )
+
+    chats = relationship('Chat', back_populates='profile', cascade="all, delete-orphan")
