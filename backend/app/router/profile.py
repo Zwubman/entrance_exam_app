@@ -4,9 +4,9 @@ from app.config.database import get_db
 router = APIRouter(tags=['Profile Routers'], prefix='/profiles')
 
 @router.post('/')
-def create_profile():
+def create_my_profile():
     pass
 
 @router.put('/')
-def update_profile():
+def update_my_profile():
     pass

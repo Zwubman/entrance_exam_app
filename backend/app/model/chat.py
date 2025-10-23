@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, UUID, ForeignKey
+from sqlalchemy import Column, String, UUID, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from app.config.database import Base
 from .db_helper import DBHelper
@@ -10,6 +10,11 @@ class Chat(Base, DBHelper):
         String(255),
         nullable=True,
         comment="Brief summary of the chat conversation"
+    )
+
+    initial_idea = Column(
+        Text,
+        nullable=True
     )
 
     profile_id = Column(

@@ -5,7 +5,7 @@ from app.util.token import auth_checker
 router = APIRouter(tags=['User Routers'], prefix='/users')
 
 @router.post('/', dependencies=[Depends(auth_checker)])
-def create_new_admin():
+def add_new_admin():
     pass
 
 @router.post('/login')

@@ -5,7 +5,7 @@ from app.util.token import auth_checker
 router = APIRouter(tags=['Exam Routers'], prefix='/exams')
 
 @router.post('/', dependencies=[Depends(auth_checker)])
-def insert_exam():
+def insert_new_exam():
     pass
 
 @router.get('/', dependencies=[Depends(auth_checker)])
@@ -13,7 +13,7 @@ def get_all_exams():
     pass
 
 @router.get('/{exam_id}', dependencies=[Depends(auth_checker)])
-def get_one_exam():
+def get_exam():
     pass
 
 @router.put('/{exam_id}', dependencies=[Depends(auth_checker)])
@@ -28,10 +28,10 @@ def delete_exam():
 def search_exam():
     pass
 
-@router.post('/{exam_id}/submit')
+@router.post('/submit')
 def submit_exam():
     pass
 
-@router.post('/{exam_id}/new-chat')
+@router.post('/new-chat')
 def create_new_chat_from_exam():
     pass
