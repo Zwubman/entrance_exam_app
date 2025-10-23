@@ -1,44 +1,33 @@
 from fastapi import APIRouter, Depends
-from app.schema.user import UserCreate, UserLogin
-from sqlalchemy.orm import Session
 from app.config.database import get_db
-from app.controller import user
 from app.util.token import auth_checker
 
 router = APIRouter(tags=['User Routers'], prefix='/users')
 
-@router.post('/register')
-def register(req: UserCreate, db: Session = Depends(get_db)):
-    return user.register(req, db)
+@router.post('/', dependencies=[Depends(auth_checker)])
+def add_new_admin():
+    pass
 
 @router.post('/login')
-def login(req: UserLogin, db: Session = Depends(get_db)):
-    return user.login(req, db)
+def login():
+    pass
 
-@router.put('/me')
-def update_my_profile(id = Depends(auth_checker)):
-    return id
+@router.put('/me', dependencies=[Depends(auth_checker)])
+def update_my_profile():
+    pass
 
-@router.get('/me')
+@router.get('/me', dependencies=[Depends(auth_checker)])
 def get_my_profile():
     pass
 
-@router.get('/')
+@router.get('/', dependencies=[Depends(auth_checker)])
 def get_all_users():
     pass
 
-@router.get('/{id}')
-def get_user_profile():
-    pass
-
-@router.delete('/{id}')
+@router.delete('/{user_id}', dependencies=[Depends(auth_checker)])
 def delete_user():
     pass
 
-@router.delete('/me')
+@router.delete('/me', dependencies=[Depends(auth_checker)])
 def delete_my_profile():
-    pass
-
-@router.post('/{id}')
-def add_admin_role():
     pass

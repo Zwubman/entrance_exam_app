@@ -1,9 +1,5 @@
 from fastapi import APIRouter, Depends
-from app.schema.user import UserCreate, UserLogin
-from sqlalchemy.orm import Session
 from app.config.database import get_db
-from app.controller import user
-from app.util.token import auth_checker
 
 router = APIRouter(tags=['Chat Routers'], prefix='/chats')
 
@@ -20,5 +16,9 @@ def get_chat_history():
     pass
 
 @router.get('/')
-def list_chats():
+def list_all_chats():
+    pass
+
+@router.delete('/{chat_id}')
+def delete_chat():
     pass
