@@ -8,10 +8,6 @@ router = APIRouter(tags=['User Routers'], prefix='/users')
 def add_new_admin():
     pass
 
-@router.post('/login')
-def login():
-    pass
-
 @router.put('/me', dependencies=[Depends(auth_checker)])
 def update_my_profile():
     pass

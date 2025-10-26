@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, DateTime, func, UUID
+from sqlalchemy import Uuid, Boolean, Column, DateTime, func
 from sqlalchemy.orm import declarative_mixin, declared_attr
 from sqlalchemy.ext.declarative import declarative_base
 from uuid import uuid4
@@ -8,7 +8,7 @@ Base = declarative_base()
 @declarative_mixin
 class DBHelper:
     id = Column(
-        UUID(as_uuid=True),
+        Uuid,
         primary_key=True,
         default=uuid4,
         comment="Primary key identifier"
@@ -17,7 +17,7 @@ class DBHelper:
     is_deleted = Column(
         Boolean,
         nullable=False,
-        server_default="false",
+        default=False,
         comment="Soft delete flag"
     )    
     

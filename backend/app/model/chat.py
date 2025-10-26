@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, UUID, ForeignKey, Text
+from sqlalchemy import Column, String, Uuid, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from app.config.database import Base
 from .db_helper import DBHelper
@@ -18,7 +18,7 @@ class Chat(Base, DBHelper):
     )
 
     profile_id = Column(
-        UUID(as_uuid=True),
+        Uuid,
         ForeignKey('profiles.id'),
         nullable=False,
         index=True,

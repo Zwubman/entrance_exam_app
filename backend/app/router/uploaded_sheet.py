@@ -15,3 +15,11 @@ def get_uploaded_sheet():
 @router.get('/{upload_id}/insert-exam', dependencies=[Depends(auth_checker)])
 def insert_exam_from_sheet():
     pass
+
+@router.delete('/{upload_id}', dependencies=[Depends(auth_checker)])
+def delete_uploaded_sheet():
+    pass
+
+@router.delete('/{upload_id}/force', dependencies=[Depends(auth_checker)])
+def force_delete_uploaded_sheet():
+    pass

@@ -17,3 +17,6 @@ def get_db():
         yield db
     finally:
         db.close()
+
+def db_session_factory():
+    return next(get_db())
