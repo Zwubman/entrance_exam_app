@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.router import (
     user, profile, exam, chat, feedback, 
-    quiz, analytic, uploaded_sheet
+    quiz, analytic, uploaded_sheet, auth
 )
 from fastapi.middleware.cors import CORSMiddleware
 from app.config.database import Base, engine
@@ -20,6 +20,7 @@ Base.metadata.create_all(bind=engine)
 def health():
     return "The server is live..."
 
+app.include_router(auth.router)
 app.include_router(user.router)
 app.include_router(profile.router)
 app.include_router(exam.router)

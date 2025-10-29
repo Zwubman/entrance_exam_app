@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Text, UUID, ForeignKey
+from sqlalchemy import Column, Text, Uuid, ForeignKey
 from sqlalchemy.orm import relationship
 from app.config.database import Base
 from .db_helper import DBHelper
@@ -6,20 +6,20 @@ from .db_helper import DBHelper
 class Conversation(Base, DBHelper):
     __tablename__ = 'conversations'
 
-    user_ask = Column(
+    user_question = Column(
         Text,
         nullable=False,
         comment="User's question or input"
     )
 
-    ai_response = Column(
+    ai_answer = Column(
         Text,
         nullable=True,
-        comment="AI's response to the user input"
+        comment="AI's answer to the user input"
     )
 
     chat_id = Column(
-        UUID(as_uuid=True),
+        Uuid,
         ForeignKey('chats.id'),
         nullable=False,
         index=True,

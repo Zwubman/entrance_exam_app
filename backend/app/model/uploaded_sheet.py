@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Text, Integer
+from sqlalchemy import Column, Text
 from app.config.database import Base
 from .db_helper import DBHelper
 
@@ -11,6 +11,6 @@ class UploadedSheet(Base, DBHelper):
     )
 
     extracted_text = Column(
-        Integer,
+        Text,
         nullable=True,
     )
