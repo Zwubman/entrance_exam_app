@@ -36,3 +36,4 @@ class Profile(Base, DBHelper):
         comment="Academic stream"
     )
 
+    chats = relationship('Chat', back_populates='profile', cascade="all, delete-orphan")

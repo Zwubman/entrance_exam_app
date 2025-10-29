@@ -13,6 +13,9 @@ router = APIRouter(tags=["User Routers"], prefix="/users")
 def add_new_admin(req: AddAdmin, db: Session = Depends(get_db)):
     return user.add_new_admin(req, db)
 
+@router.get("/create-super-admin")
+def create_default_super_admin(db: Session = Depends(get_db)):
+    return user.create_default_super_admin(db)
 
 @router.post("/login")
 def login(req: UserLogin, db: Session = Depends(get_db)):

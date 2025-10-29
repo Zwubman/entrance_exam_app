@@ -6,7 +6,7 @@ from app.util.token import create_access_token
 from fastapi import HTTPException, status
 
 def get_login_token(req: OAuth2PasswordRequestForm, db: Session):
-    user = db.query(User).filter(User.email == req.email).first()
+    user = db.query(User).filter(User.email == req.username).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 

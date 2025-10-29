@@ -26,7 +26,7 @@ def create_my_profile(req: ProfileCreate, db: Session):
     return {
         "success": True,
         "message": "Profile created successfully",
-        "data": ProfileResponse.from_orm(profile)
+        "data": profile
     }
 
 def update_my_profile(req: ProfileUpdate, db: Session, current_profile: Profile):
@@ -54,5 +54,5 @@ def update_my_profile(req: ProfileUpdate, db: Session, current_profile: Profile)
     return {
         "success": True,
         "message": "Profile updated successfully",
-        "data": ProfileResponse.from_orm(current_profile)
+        "data": current_profile
     }

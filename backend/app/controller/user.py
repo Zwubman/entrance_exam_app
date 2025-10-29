@@ -28,7 +28,7 @@ def add_new_admin(req: AddAdmin, db: Session):
     return {
         "success": True,
         "message": "Admin created successfully",
-        "data": UserResponse.from_orm(new_admin)
+        "data": new_admin
     }
 
 
@@ -51,7 +51,7 @@ def login(req: UserLogin, db: Session):
         "success": True,
         "message": "Login successful",
         "token": token,
-        "data": UserResponse.from_orm(user)
+        "data": user
     }
 
 
@@ -74,7 +74,7 @@ def update_my_profile(req: UserUpdate, db: Session, current_user: User):
     return {
         "success": True,
         "message": "Profile updated successfully",
-        "data": UserResponse.from_orm(current_user)
+        "data": current_user
     }
 
 
@@ -82,7 +82,7 @@ def get_my_profile(current_user: User):
     return {
         "success": True,
         "message": "Profile retrieved successfully",
-        "data": UserResponse.from_orm(current_user)
+        "data": current_user
     }
 
 
@@ -94,8 +94,7 @@ def get_all_users(db: Session, current_user: User):
             )
 
     users = db.query(User).filter(User.is_deleted == False).all()
-    response = [UserResponse.from_orm(u) for u in users]
-    return {"success": True, "count": len(response), "data": response}
+    return {"success": True, "count": len(users), "data": users}
 
 
 def delete_user(user_id: str, db: Session, current_user: User):
@@ -104,6 +103,12 @@ def delete_user(user_id: str, db: Session, current_user: User):
             status_code=status.HTTP_403_FORBIDDEN, 
             detail="Only super admins can delete users"
             )
+    
+    if current_user.id == user_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='You cannot delete your self'
+        )
 
     user = db.query(User).filter(User.id == user_id, User.is_deleted == False).first()
     if not user:
@@ -117,7 +122,7 @@ def delete_user(user_id: str, db: Session, current_user: User):
 
     return {
         "success": True, 
-        "message": f"User with ID {user_id} soft deleted successfully"
+        "message": f"User with ID {user_id} deleted successfully"
         }
 
 
@@ -135,3 +140,20 @@ def delete_my_profile(db: Session, current_user: User):
         "success": True, 
         "message": "Your profile has been successfully deleted."
         }
+
+def create_default_super_admin(db: Session):
+    super_admin = db.query(User).filter(
+        User.role == 'super_admin',
+        User.is_deleted == False
+    ).first()
+
+    if not super_admin:
+        new_super_admin = User(
+            email='super.admin@amen.com',
+            password=hash_pswd('12345678'),
+            role='super_admin'
+        )
+        db.add(new_super_admin)
+        db.commit()
+        db.refresh(new_super_admin)
+        return "Created"
