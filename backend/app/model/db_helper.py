@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, DateTime, func, Uuid, String
+from sqlalchemy import Uuid, Boolean, Column, DateTime, func
 from sqlalchemy.orm import declarative_mixin, declared_attr
 from sqlalchemy.ext.declarative import declarative_base
 from uuid import uuid1

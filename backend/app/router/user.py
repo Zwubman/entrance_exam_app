@@ -4,6 +4,7 @@ from app.controller import user
 from app.schema.user import AddAdmin, UserLogin, UserUpdate, DeleteResponse
 from app.config.database import get_db
 from app.util.token import auth_checker
+from uuid import UUID
 
 router = APIRouter(tags=["User Routers"], prefix="/users")
 
@@ -35,7 +36,7 @@ def get_all_users(db: Session = Depends(get_db), current_user=Depends(auth_check
 
 @router.delete("/{user_id}", dependencies=[Depends(auth_checker)])
 def delete_user(user_id: str, db: Session = Depends(get_db), current_user=Depends(auth_checker)):
-    return user.delete_user(user_id, db, current_user)
+    return user.delete_user(UUID(user_id), db, current_user)
 
 
 @router.delete("/me", response_model=DeleteResponse, dependencies=[Depends(auth_checker)])
