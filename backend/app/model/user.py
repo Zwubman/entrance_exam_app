@@ -13,7 +13,7 @@ class User(Base, DBHelper):
         comment="User email address"
     )
 
-    hashed_password = Column(
+    password = Column(
         String(255),
         nullable=False,
         comment="Hashed password"
