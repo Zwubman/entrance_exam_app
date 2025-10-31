@@ -12,7 +12,6 @@ def create_new_chat(req: ChatCreate, profile: Profile, db: Session):
     if req.initial_idea:
         short_summary = ai_short_summary(req.initial_idea)
 
-
     new_chat = Chat(
         profile=profile,
         profile_id=profile.id,

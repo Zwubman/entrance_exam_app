@@ -9,8 +9,3 @@ class UploadedSheet(Base, DBHelper):
         Text,
         nullable=False,
     )
-
-    extracted_text = Column(
-        Text,
-        nullable=True,
-    )
