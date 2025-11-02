@@ -5,7 +5,6 @@ from app.model.user import User
 from app.util.security import hash_pswd, verify_pswd
 from app.util.token import create_access_token
 
-
 def add_new_admin(req: AddAdmin, db: Session):
     existing_user = db.query(User).filter(User.email == req.email).first()
     if existing_user:
