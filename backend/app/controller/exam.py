@@ -1,4 +1,5 @@
 import os
+import uuid
 from fastapi import Depends, UploadFile, HTTPException, status
 from app.config.database import get_db
 from app.util.embedding.insert_pdf_to_vector_db import insert_pdf_to_vector_db
@@ -7,7 +8,6 @@ from app.util.embedding.extract_pdf_data import extract_pdf_data
 from sqlalchemy.orm import Session
 from app.model.uploaded_sheet import UploadedSheet
 from app.util.embedding import qdrant, COLLECTION_NAME
-from uuid import uuid1
 from app.config.setting import settings
 from app.schema.exam import ExamInsert, ExamSearch, ExamSubmit, ExamChat
 from app.util.ai_helper.generate_exams import generate_exams
@@ -22,16 +22,17 @@ async def insert_new_exam(year: str, subject: str, extra_data: str, file: Upload
     os.makedirs(settings.UPLOADS_DIR, exist_ok=True)
 
     pdf_bytes = await file.read()
-    file_path = f'{settings.UPLOADS_DIR}{uuid1()}{os.path.splitext(file.filename)[1]}'
+    file_name = f'{uuid.uuid1().hex}{os.path.splitext(file.filename)[1]}'
+    file_path = os.path.join(settings.UPLOADS_DIR, file_name)
 
     with open(file_path, 'wb') as f:
         f.write(pdf_bytes)
-        uploaded_sheet = UploadedSheet(
-            file_path=file_path
-        )
-        db.add(uploaded_sheet)
-        db.commit()
-        db.refresh(uploaded_sheet)
+        # uploaded_sheet = UploadedSheet(
+        #     file_path=file_path
+        # )
+        # db.add(uploaded_sheet)
+        # db.commit()
+        # db.refresh(uploaded_sheet)
 
     extracted_payloads = extract_pdf_data(pdf_bytes)
     summary = insert_pdf_to_vector_db(extracted_payloads, req)
@@ -71,11 +72,9 @@ def get_exam(exam_id: str):
     }
 
 def delete_exam(exam_id: str):
-    result = qdrant.retrieve(
+    result = qdrant.delete(
         collection_name=COLLECTION_NAME,
-        ids=[exam_id],
-        with_payload=True,
-        with_vectors=False
+        points_selector=[exam_id]
     )
 
     if not result:    
@@ -84,15 +83,6 @@ def delete_exam(exam_id: str):
             detail='Exam not found'
         )
     
-    for image_path in result[0].payload['images']:
-        if os.path.exists(image_path):
-            os.remove(image_path)
-
-    qdrant.delete(
-        collection_name=COLLECTION_NAME,
-        points_selector=[result[0].id]
-    )
-
     return f"delete the exam with ID {exam_id}"
 
 def search_exam(req: ExamSearch):
