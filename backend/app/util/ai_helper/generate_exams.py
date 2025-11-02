@@ -61,7 +61,7 @@ Ensure the output is strictly valid JSON, with no explanations or extra text.
         data = json.loads(response)
     except json.JSONDecodeError as e:
         raise ValueError(
-            f"Invalid JSON returned by LLM. First 200 chars:\n{response[:200]}"
+            f"Invalid JSON returned by LLM. First 200 chars:\n{response}"
         )
 
     if not isinstance(data, list) or not all("question" in q and "options" in q for q in data):

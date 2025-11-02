@@ -15,9 +15,9 @@ IMAGE_EMBEDDING_MODEL = SentenceTransformer("clip-ViT-B-32")
 #     api_key=settings.QDRANT_API_KEY,
 # )
 
-# qdrant = QdrantClient(host="localhost", port=6333)
+qdrant = QdrantClient(host="localhost", port=6333)
 
-qdrant = QdrantClient(":memory:")
+# qdrant = QdrantClient(":memory:")
 
 try:
     qdrant.get_collection(COLLECTION_NAME)

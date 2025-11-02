@@ -11,8 +11,14 @@ class ExamSearch(BaseModel):
     year: Optional[str] = None
     subject: Optional[str] = None
     extra_data: Optional[str] = None
-    questions_length: int = 25
+    next_page: Optional[int] = 0
+    questions_length: int = 10
 
 class ExamSubmit(BaseModel):
     questions: Any
     answers: Any
+
+class ExamChat(BaseModel):
+    questions: Any
+    answers: Any
+    evaluations: Optional[Any] = None

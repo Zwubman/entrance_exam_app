@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, UploadFile, File, Body
 from app.config.database import get_db
 from app.util.token import auth_checker
-from app.schema.exam import ExamSearch, ExamSubmit
+from app.schema.exam import ExamSearch, ExamSubmit, ExamChat
 from app.router.chat import get_profile
 from app.controller import exam
 
@@ -32,5 +32,5 @@ def submit_exam(req: ExamSubmit):
     return exam.submit_exam(req)
 
 @router.post('/new-chat')
-def create_new_chat_from_exam(req: ExamSubmit, profile = Depends(get_profile), db = Depends(get_db)):
+def create_new_chat_from_exam(req: ExamChat, profile = Depends(get_profile), db = Depends(get_db)):
     return exam.create_new_chat_from_exam(req, profile, db)
