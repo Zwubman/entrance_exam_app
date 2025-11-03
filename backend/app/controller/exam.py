@@ -22,11 +22,11 @@ async def insert_new_exam(year: str, subject: str, extra_data: str, file: Upload
     os.makedirs(settings.UPLOADS_DIR, exist_ok=True)
 
     pdf_bytes = await file.read()
-    file_name = f'{uuid.uuid1().hex}{os.path.splitext(file.filename)[1]}'
-    file_path = os.path.join(settings.UPLOADS_DIR, file_name)
+    # file_name = f'file_{uuid.uuid1().hex}{os.path.splitext(file.filename)[1]}'
+    # file_path = os.path.join(settings.UPLOADS_DIR, file_name)
 
-    with open(file_path, 'wb') as f:
-        f.write(pdf_bytes)
+    # with open(file_path, 'wb') as f:
+    #     f.write(pdf_bytes)
         # uploaded_sheet = UploadedSheet(
         #     file_path=file_path
         # )
@@ -96,10 +96,10 @@ def search_exam(req: ExamSearch):
         )
     
     context = list(set([x['payload']['text'] for x in results]))
-    generated_exams = generate_exams(context, req.questions_length)
+    generated_exams = generate_exams(context[:25], req.questions_length)
 
-    image_paths = {'images': [x['payload']['images'] for x in results]}
-    unique_image_list = list(reduce(lambda acc, sublist: acc.union(set(sublist)), image_paths["images"], set()))
+    image_paths = [x['payload']['images'] for x in results]
+    unique_image_list = list(reduce(lambda acc, sublist: acc.union(set(sublist)), image_paths, set()))
 
     return {
         'generated_exams': generated_exams,
