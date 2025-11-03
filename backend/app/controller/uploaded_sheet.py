@@ -54,7 +54,6 @@ def get_uploaded_sheet(file_path: str, db: Session):
     }
 
 def insert_exam_from_sheet(url: str, req: ExamInsert):
-    print(os.path.exists(url))
     if not os.path.exists(url):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
