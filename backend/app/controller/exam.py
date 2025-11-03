@@ -22,11 +22,11 @@ async def insert_new_exam(year: str, subject: str, extra_data: str, file: Upload
     os.makedirs(settings.UPLOADS_DIR, exist_ok=True)
 
     pdf_bytes = await file.read()
-    file_name = f'{uuid.uuid1().hex}{os.path.splitext(file.filename)[1]}'
-    file_path = os.path.join(settings.UPLOADS_DIR, file_name)
+    # file_name = f'file_{uuid.uuid1().hex}{os.path.splitext(file.filename)[1]}'
+    # file_path = os.path.join(settings.UPLOADS_DIR, file_name)
 
-    with open(file_path, 'wb') as f:
-        f.write(pdf_bytes)
+    # with open(file_path, 'wb') as f:
+    #     f.write(pdf_bytes)
         # uploaded_sheet = UploadedSheet(
         #     file_path=file_path
         # )

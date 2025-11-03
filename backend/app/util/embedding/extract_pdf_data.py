@@ -48,7 +48,7 @@ def extract_pdf_data(pdf_bytes: bytes):
                     except Exception:
                         continue
 
-                    image_name = f"{uuid.uuid1().hex}.png"
+                    image_name = f"page_{page_num}_{uuid.uuid1().hex}.png"
                     image_path = os.path.join(settings.UPLOADS_DIR, image_name)
                     img.save(image_path, "PNG")
                     image_paths.append(image_path)
