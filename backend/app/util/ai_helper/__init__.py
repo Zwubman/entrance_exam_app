@@ -12,5 +12,5 @@ set_llm_cache(SQLAlchemyCache(db_session_factory))
 llm = ChatGoogleGenerativeAI(
     model="models/gemini-2.0-flash-lite",
     temperature=0.2,
-    max_output_tokens=500,
+    max_output_tokens=100,
 )
