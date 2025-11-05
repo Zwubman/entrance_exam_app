@@ -3,7 +3,7 @@ from langchain.prompts import PromptTemplate
 from app.model.conversation import Conversation
 import json
 
-def summarize_conversation(prev_conversations: Conversation):
+def summarize_conversation(prev_conversations: Conversation | dict):
 
     template = """
 You are a teacher.

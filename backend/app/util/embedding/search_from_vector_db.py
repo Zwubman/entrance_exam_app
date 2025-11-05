@@ -13,13 +13,6 @@ def search_from_vector_db(req: ExamSearch, limit: int = 5, offset: int = 0):
         filter_condition.append(FieldCondition(key="extra_data", match=MatchValue(value=req.extra_data)))
 
     query_filter = Filter(must=filter_condition) if filter_condition else None
-
-    print(
-        '\n\n\n',
-        req,
-        '\n\n\n'
-    )
-
     results = qdrant.search(
         collection_name=COLLECTION_NAME,
         query_vector=query_vector,

@@ -6,16 +6,19 @@ from app.model.conversation import Conversation
 from app.schema.chat import ChatCreate, ChatConversation
 from app.util.ai_helper.ai_chat_engine import ai_chat_engine
 from app.util.ai_helper.short_summary import short_summary as ai_short_summary
+from app.util.ai_helper.summarize_conversation import summarize_conversation
 from uuid import UUID
 
 def create_new_chat(req: ChatCreate, profile: Profile, db: Session):
+    initial_idea = None
     if req.initial_idea:
         short_summary = ai_short_summary(req.initial_idea)
+        initial_idea = summarize_conversation({'conversations': req.initial_idea})
 
     new_chat = Chat(
         profile=profile,
         profile_id=profile.id,
-        initial_idea=req.initial_idea or None,
+        initial_idea=initial_idea,
         short_summary=short_summary or None
     )
     db.add(new_chat)
