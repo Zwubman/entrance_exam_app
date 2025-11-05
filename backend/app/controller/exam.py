@@ -1,12 +1,10 @@
 import os
-import uuid
 from fastapi import Depends, UploadFile, HTTPException, status
 from app.config.database import get_db
 from app.util.embedding.insert_pdf_to_vector_db import insert_pdf_to_vector_db
 from app.util.embedding.search_from_vector_db import search_from_vector_db
 from app.util.embedding.extract_pdf_data import extract_pdf_data
 from sqlalchemy.orm import Session
-from app.model.uploaded_sheet import UploadedSheet
 from app.util.embedding import qdrant, COLLECTION_NAME
 from app.config.setting import settings
 from app.schema.exam import ExamInsert, ExamSearch, ExamSubmit, ExamChat
@@ -22,18 +20,6 @@ async def insert_new_exam(year: str, subject: str, extra_data: str, file: Upload
     os.makedirs(settings.UPLOADS_DIR, exist_ok=True)
 
     pdf_bytes = await file.read()
-    # file_name = f'file_{uuid.uuid1().hex}{os.path.splitext(file.filename)[1]}'
-    # file_path = os.path.join(settings.UPLOADS_DIR, file_name)
-
-    # with open(file_path, 'wb') as f:
-    #     f.write(pdf_bytes)
-        # uploaded_sheet = UploadedSheet(
-        #     file_path=file_path
-        # )
-        # db.add(uploaded_sheet)
-        # db.commit()
-        # db.refresh(uploaded_sheet)
-
     extracted_payloads = extract_pdf_data(pdf_bytes)
     summary = insert_pdf_to_vector_db(extracted_payloads, req)
 
