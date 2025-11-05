@@ -4,7 +4,6 @@ import numpy as np
 from fastapi import UploadFile, HTTPException, status
 from app.util.embedding.extract_pdf_data import extract_pdf_data
 from sqlalchemy.orm import Session
-from app.model.uploaded_sheet import UploadedSheet
 from app.config.setting import settings
 from app.util.ai_helper.generate_exams import generate_exams
 from functools import reduce
@@ -20,13 +19,7 @@ async def generate_quiz(query: str, questions_length: int, url: str, file: Uploa
 
         with open(file_path, 'wb') as f:
             f.write(pdf_bytes)
-            # uploaded_sheet = UploadedSheet(
-            #     file_path=file_path
-            # )
-            # db.add(uploaded_sheet)
-            # db.commit()
-            # db.refresh(uploaded_sheet)
-    
+            
     elif url:
         if not os.path.exists(url):
             raise HTTPException(
