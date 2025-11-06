@@ -1,10 +1,9 @@
 import os
 from fastapi import Depends, UploadFile, HTTPException, status
 from app.config.database import get_db
-from app.util.embedding.insert_pdf_to_vector_db import insert_pdf_to_vector_db
+from app.util.embedding.insert_file_into_vector_db import insert_file_into_vector_db
 from app.util.embedding.search_from_vector_db import search_from_vector_db
-from app.util.embedding.extract_pdf_data import extract_pdf_data
-from sqlalchemy.orm import Session
+from app.util.embedding.extract_file_data import extract_file_data
 from app.util.embedding import qdrant, COLLECTION_NAME
 from app.config.setting import settings
 from app.schema.exam import ExamInsert, ExamSearch, ExamSubmit, ExamChat
@@ -15,13 +14,14 @@ from app.router.chat import get_profile
 from app.schema.chat import ChatCreate
 from functools import reduce
 
-async def insert_new_exam(year: str, subject: str, extra_data: str, file: UploadFile, db: Session):
+async def insert_new_exam(year: str, subject: str, extra_data: str, file: UploadFile):
     req = ExamInsert(year=year, subject=subject, extra_data=extra_data)
     os.makedirs(settings.UPLOADS_DIR, exist_ok=True)
 
-    pdf_bytes = await file.read()
-    extracted_payloads = extract_pdf_data(pdf_bytes)
-    summary = insert_pdf_to_vector_db(extracted_payloads, req)
+    file_bytes = await file.read()
+    file_extension = os.path.splitext(file.filename)[1]
+    extracted_payloads = extract_file_data(file_bytes, file_extension)
+    summary = insert_file_into_vector_db(extracted_payloads, req)
 
     return summary
 
