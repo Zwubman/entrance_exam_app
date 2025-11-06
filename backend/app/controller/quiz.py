@@ -2,7 +2,7 @@ import os
 import uuid
 import numpy as np
 from fastapi import UploadFile, HTTPException, status
-from app.util.embedding.extract_pdf_data import extract_pdf_data
+from app.util.embedding.extract_file_data import extract_file_data
 from sqlalchemy.orm import Session
 from app.config.setting import settings
 from app.util.ai_helper.generate_exams import generate_exams
@@ -12,13 +12,15 @@ from app.util.embedding import TEXT_EMBEDDING_MODEL, PointStruct
 async def generate_quiz(query: str, questions_length: int, url: str, file: UploadFile, db: Session):
     os.makedirs(settings.UPLOADS_DIR, exist_ok=True)
 
+    file_extension = None
     if file:
-        pdf_bytes = await file.read()
+        file_bytes = await file.read()
         file_name = f'file_{uuid.uuid1().hex}{os.path.splitext(file.filename)[1]}'
         file_path = os.path.join(settings.UPLOADS_DIR, file_name)
+        file_extension = os.path.splitext(file.filename)[1]
 
         with open(file_path, 'wb') as f:
-            f.write(pdf_bytes)
+            f.write(file_bytes)
             
     elif url:
         if not os.path.exists(url):
@@ -28,8 +30,9 @@ async def generate_quiz(query: str, questions_length: int, url: str, file: Uploa
             )
         else:
             with open(url, 'rb') as file:
-                pdf_bytes = file.read()
+                file_bytes = file.read()
                 file_path = url
+                file_extension = os.path.splitext(url)[1]
 
     else:
         raise HTTPException(
@@ -37,7 +40,7 @@ async def generate_quiz(query: str, questions_length: int, url: str, file: Uploa
             detail='File not specified'
         )
     
-    extracted_payloads = extract_pdf_data(pdf_bytes)
+    extracted_payloads = extract_file_data(file_bytes, file_extension)
     embedded_texts = text_embedding(extracted_payloads)
     results = text_searching(query or '', embedded_texts)
     context = list(set([x['text'] for x in results]))

@@ -2,7 +2,7 @@ import uuid
 from . import qdrant, COLLECTION_NAME, TEXT_EMBEDDING_MODEL, PointStruct
 from app.schema.exam import ExamInsert
 
-def insert_pdf_to_vector_db(extracted_payloads: dict, req: ExamInsert):
+def insert_file_into_vector_db(extracted_payloads: dict, req: ExamInsert):
     """Insert extracted PDF content (text + images) into Qdrant."""
     points = []
     total_points = total_images = 0

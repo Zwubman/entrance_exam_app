@@ -1,7 +1,7 @@
 import os
 from fastapi import HTTPException, status
-from app.util.embedding.insert_pdf_to_vector_db import insert_pdf_to_vector_db
-from app.util.embedding.extract_pdf_data import extract_pdf_data
+from app.util.embedding.insert_file_into_vector_db import insert_file_into_vector_db
+from app.util.embedding.extract_file_data import extract_file_data
 from app.schema.exam import ExamInsert
 from app.config.setting import settings
 
@@ -18,9 +18,11 @@ def insert_exam_from_sheet(url: str, req: ExamInsert):
         )
 
     with open(url, 'rb') as file:
-        pdf_bytes = file.read()
-    extracted_payloads = extract_pdf_data(pdf_bytes)
-    summary = insert_pdf_to_vector_db(extracted_payloads, req)
+        file_bytes = file.read()
+        file_extension = os.path.splitext(url)[1]
+
+    extracted_payloads = extract_file_data(file_bytes, file_extension)
+    summary = insert_file_into_vector_db(extracted_payloads, req)
     return summary
 
 def force_delete_uploaded_sheet(url: str):

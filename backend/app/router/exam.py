@@ -9,7 +9,7 @@ router = APIRouter(tags=['Exam Routers'], prefix='/exams')
 
 @router.post('/', dependencies=[Depends(auth_checker)])
 async def insert_new_exam(year: str = Body(...), subject: str = Body(...), extra_data: str = Body(None), file: UploadFile = File(...), db = Depends(get_db)):
-    return await exam.insert_new_exam(year, subject, extra_data, file, db)
+    return await exam.insert_new_exam(year, subject, extra_data, file)
 
 @router.get('/', dependencies=[Depends(auth_checker)])
 def get_all_exams(limit: int = 25, next_page: str = None):
