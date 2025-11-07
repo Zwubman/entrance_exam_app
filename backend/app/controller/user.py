@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-from app.schema.user import AddAdmin, UserLogin, UserUpdate, UserResponse
+from app.schema.user import AddAdmin, UserLogin, UserUpdate
 from app.model.user import User
 from app.util.security import hash_pswd, verify_pswd
 from app.util.token import create_access_token

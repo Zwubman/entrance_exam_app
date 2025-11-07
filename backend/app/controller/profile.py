@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from app.model.profile import Profile
-from app.schema.profile import ProfileCreate, ProfileUpdate, ProfileResponse
+from app.schema.profile import ProfileCreate, ProfileUpdate
 
 def create_my_profile(req: ProfileCreate, db: Session):
     # Check if a profile with the same device_id already exists

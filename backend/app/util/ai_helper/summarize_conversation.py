@@ -1,7 +1,7 @@
-from . import llm
+import json
+from app.config.ai_helper import llm
 from langchain.prompts import PromptTemplate
 from app.model.conversation import Conversation
-import json
 
 def summarize_conversation(prev_conversations: Conversation | dict):
 

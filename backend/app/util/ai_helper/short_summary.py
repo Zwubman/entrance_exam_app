@@ -1,4 +1,4 @@
-from . import llm
+from app.config.ai_helper import llm
 from langchain.prompts import PromptTemplate
 
 def short_summary(text):

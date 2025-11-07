@@ -1,5 +1,5 @@
 import uuid
-from . import qdrant, COLLECTION_NAME, TEXT_EMBEDDING_MODEL, PointStruct
+from app.config.embedding import qdrant, COLLECTION_NAME, TEXT_EMBEDDING_MODEL, PointStruct
 from app.schema.exam import ExamInsert
 
 def insert_file_into_vector_db(extracted_payloads: dict, req: ExamInsert):

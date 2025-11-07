@@ -4,7 +4,7 @@ from app.config.database import get_db
 from app.util.embedding.insert_file_into_vector_db import insert_file_into_vector_db
 from app.util.embedding.search_from_vector_db import search_from_vector_db
 from app.util.embedding.extract_file_data import extract_file_data
-from app.util.embedding import qdrant, COLLECTION_NAME
+from app.config.embedding import qdrant, COLLECTION_NAME
 from app.config.setting import settings
 from app.schema.exam import ExamInsert, ExamSearch, ExamSubmit, ExamChat
 from app.util.ai_helper.generate_exams import generate_exams
