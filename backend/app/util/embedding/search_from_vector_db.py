@@ -1,5 +1,5 @@
 from app.schema.exam import ExamSearch
-from . import qdrant, TEXT_EMBEDDING_MODEL, COLLECTION_NAME, Filter, FieldCondition, MatchValue
+from app.config.embedding import qdrant, TEXT_EMBEDDING_MODEL, COLLECTION_NAME, Filter, FieldCondition, MatchValue
 
 def search_from_vector_db(req: ExamSearch, limit: int = 5, offset: int = 0):
     query_vector = TEXT_EMBEDDING_MODEL.encode(req.query or '').tolist()

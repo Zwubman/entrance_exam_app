@@ -1,5 +1,4 @@
-import json
-from . import llm
+from app.config.ai_helper import llm
 from langchain.prompts import PromptTemplate
 
 def evaluate_exam_answer(questions, answers):

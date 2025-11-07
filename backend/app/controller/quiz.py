@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.config.setting import settings
 from app.util.ai_helper.generate_exams import generate_exams
 from functools import reduce
-from app.util.embedding import TEXT_EMBEDDING_MODEL, PointStruct
+from app.config.embedding import TEXT_EMBEDDING_MODEL, PointStruct
 
 async def generate_quiz(query: str, questions_length: int, url: str, file: UploadFile, db: Session):
     os.makedirs(settings.UPLOADS_DIR, exist_ok=True)

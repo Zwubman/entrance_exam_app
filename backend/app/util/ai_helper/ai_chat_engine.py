@@ -1,8 +1,8 @@
-from . import llm
-from .summarize_conversation import summarize_conversation
-from langchain.prompts import PromptTemplate
+from app.config.ai_helper import llm
+from app.util.ai_helper.summarize_conversation import summarize_conversation
 from app.model.chat import Chat
 from app.model.conversation import Conversation
+from langchain.prompts import PromptTemplate
 
 def ai_chat_engine(user_question: str, chat: Chat, prev_conversations: Conversation):
     conversation_summary = summarize_conversation(prev_conversations)

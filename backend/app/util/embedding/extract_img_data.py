@@ -6,7 +6,6 @@ import pytesseract
 import textwrap
 from app.config.setting import settings
 
-
 def extract_img_data(file_bytes: bytes):
     extracted_payloads = []
 

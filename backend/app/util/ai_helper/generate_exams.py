@@ -1,8 +1,15 @@
 import json
-from . import llm
+from app.config.ai_helper import llm
 from langchain.prompts import PromptTemplate
+from typing import Any
+from fastapi import HTTPException, status
 
-def generate_exams(context, questions_length):
+def generate_exams(context: Any, questions_length: int = 10):
+    if not context or len(context) < 1 or context.strip() == '':
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='Context not provided'
+        )
 
     template = """
 You are a teacher.
