@@ -1,39 +1,23 @@
-import io
-import os
-import uuid
-from PIL import Image
-import pytesseract
 import textwrap
+import easyocr
 from app.config.setting import settings
 
+reader = easyocr.Reader(['en'], gpu=False)
+
 def extract_img_data(file_bytes: bytes):
+    results = reader.readtext(file_bytes)
+    text = " ".join(text for (_, text, _) in results).strip()
     extracted_payloads = []
+    text_segments = []
+    image_paths = []
 
-    try:
-        img = Image.open(io.BytesIO(file_bytes))
-        img = img.convert("RGB")  # Normalize mode
+    if text:
+        sentences = textwrap.wrap(text, width=settings.CHUNK_LENGTH)
+        text_segments.extend(sentences)
 
-        image_name = f"image_{uuid.uuid1().hex}.png"
-        image_path = os.path.join(settings.UPLOADS_DIR, image_name)
-        img.save(image_path, "PNG")
-
-        try:
-            extracted_text = pytesseract.image_to_string(img)
-        except Exception as e:
-            print(f"OCR failed: {e}")
-            extracted_text = ""
-
-        text_segments = []
-        if extracted_text.strip():
-            sentences = textwrap.wrap(extracted_text.strip(), width=settings.CHUNK_LENGTH)
-            text_segments.extend(sentences)
-
-        extracted_payloads.append({
-            "texts": text_segments,
-            "images": [image_path]
-        })
-
-    except Exception as e:
-        print(f"Failed to process image file: {e}")
+    extracted_payloads.append({
+        "texts": text_segments,
+        "images": image_paths
+    })
 
     return extracted_payloads
