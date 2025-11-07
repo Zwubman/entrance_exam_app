@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from app.router import (
     user, profile, exam, chat, feedback, 
@@ -5,6 +6,7 @@ from app.router import (
 )
 from fastapi.middleware.cors import CORSMiddleware
 from app.config.database import Base, engine
+from app.config.setting import settings
 
 app = FastAPI()
 app.add_middleware(
@@ -15,6 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 Base.metadata.create_all(bind=engine)
+os.makedirs(settings.UPLOADS_DIR, exist_ok=True)
 
 @app.get("/", tags=['Health Routers'])
 def health():

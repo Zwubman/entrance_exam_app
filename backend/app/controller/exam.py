@@ -16,8 +16,6 @@ from functools import reduce
 
 async def insert_new_exam(year: str, subject: str, extra_data: str, file: UploadFile):
     req = ExamInsert(year=year, subject=subject, extra_data=extra_data)
-    os.makedirs(settings.UPLOADS_DIR, exist_ok=True)
-
     file_bytes = await file.read()
     file_extension = os.path.splitext(file.filename)[1]
     extracted_payloads = extract_file_data(file_bytes, file_extension)
